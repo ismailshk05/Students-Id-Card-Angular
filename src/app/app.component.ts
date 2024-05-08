@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   public photoFile: File | null = null;
   public signatureFile: File | null = null;
   public students: IStudentInfo[] = [];
+  public loading: boolean;
 
   constructor(private studentService: StudentService) { }
 
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   public generateIDCards(): void {
+    this.loading = true;
     if (!this.photoFile || !this.signatureFile) {
       console.error('Photo and signature files are required.');
       return;
@@ -44,6 +46,7 @@ export class AppComponent implements OnInit {
         }else{
           this.students = res['data'];
         }
+        this.loading = false;
       }
     ),(err: string)=>{
         console.log('ERR', err)
