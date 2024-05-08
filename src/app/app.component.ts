@@ -33,22 +33,26 @@ export class AppComponent implements OnInit {
   }
 
   public generateIDCards(): void {
-    this.loading = true;
     if (!this.photoFile || !this.signatureFile) {
+      window.alert('Photo and signature files are required.');
       console.error('Photo and signature files are required.');
+      this.loading = false;
       return;
     }
-
+    this.loading = true;
     this.studentService.generateIDCards(this.photoFile, this.signatureFile)
       .subscribe((res: IResponseInfo | any)=>{
         if(res.status === 'success'){
           this.students = res['data'];
         }else{
-          this.students = res['data'];
+          window.alert('Internal Server Error');
         }
         this.loading = false;
       }
     ),(err: string)=>{
-        console.log('ERR', err)
+      this.loading = false;
+        console.log('ERR', err);
+        window.alert(err)
+
     }}
 }
